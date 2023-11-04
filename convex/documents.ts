@@ -27,7 +27,7 @@ export const allPosts = query({
     },
   });
 
-  export const updateDocument= mutation({
+  export const updateLikes= mutation({
     args: { 
       id: v.id("documents"),
       likesArray: v.array(v.string())
@@ -41,6 +41,24 @@ export const allPosts = query({
      
     },
   });
+
+
+
+  export const updateFollower= mutation({
+    args: { 
+      id: v.id("documents"),
+      followerArray: v.array(v.string())
+    },
+    handler: async (ctx, args) => {
+      const { id } = args;   
+ 
+     const document =  await ctx.db.patch(id, { follower:  args.followerArray });
+
+     return document
+     
+    },
+  });
+
 
 
 
@@ -98,7 +116,8 @@ export const allPosts = query({
         coverImage: v.string(),      
         width: v.number(),
         height: v.number(),
-        likesId: v.array(v.string())
+        likesId: v.array(v.string()),
+        follower:  v.array(v.string())
      },
     handler: async (ctx, args) => {
 
@@ -116,7 +135,8 @@ export const allPosts = query({
         coverImage:args.coverImage,
         width:args.width,
         height:args.height,
-        likesId: args.likesId 
+        likesId: args.likesId,
+        follower: args.follower 
        });
    
 

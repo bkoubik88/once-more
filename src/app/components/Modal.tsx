@@ -15,11 +15,9 @@ import { useEdgeStore } from "@/lib/edgestore";
 import { useMutation } from "convex/react";
 import { Image as NextUiImage } from "@nextui-org/react";
 
-import { formatFileSize } from "@edgestore/react/utils";
 import { api } from "../../../convex/_generated/api";
-import { getImageSize, useImageSize } from "react-image-size";
+import { getImageSize } from "react-image-size";
 import Image from "next/image";
-import { CldUploadWidget } from "next-cloudinary";
 
 interface UploadeFile {
   url: string;
@@ -74,6 +72,7 @@ export default function CoverImageModal() {
         width: dimensions.width,
         height: dimensions.height,
         likesId: [],
+        follower: [],
       });
 
       toast.promise(promise, {
@@ -83,8 +82,6 @@ export default function CoverImageModal() {
         },
         error: "there was an error while storing",
       });
-
-      setLoading(false);
 
       coverImage.onClose();
     }
@@ -120,11 +117,13 @@ export default function CoverImageModal() {
               <ModalBody>
                 <div className="flex flex-col">
                   <div className="flex items-center w-full justify-center flex-col space-y-2">
-                    <Button color="secondary" disabled={loading}>
-                      <label htmlFor="uploadImage" className="cursor-pointer">
-                        Choose Image
-                      </label>
-                    </Button>
+                    {!loading && (
+                      <Button color="secondary" disabled={loading}>
+                        <label htmlFor="uploadImage" className="cursor-pointer">
+                          Choose Image
+                        </label>
+                      </Button>
+                    )}
                     <input
                       id="uploadImage"
                       accept="image/*"
@@ -138,16 +137,14 @@ export default function CoverImageModal() {
                     {preview && (
                       <div className="flex flex-col">
                         <div className="relative">
-                          <Image
-                            priority
+                          <NextUiImage
                             width={400}
                             height={400}
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             style={{ objectFit: "contain" }}
-                            quality={75}
                             alt="preview"
                             src={preview}
-                          ></Image>
+                          ></NextUiImage>
                           <span className="absolute top-4 text-center font-semibold p-2 text-black z-50 bg-slate-300/70 items-center w-full">
                             Preview
                           </span>

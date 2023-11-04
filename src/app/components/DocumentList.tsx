@@ -11,12 +11,14 @@ export const DocumentList = ({ results }: { results: any }) => {
       width,
       height,
       likesId,
+      follower,
     }: {
       _id: string;
       coverImage: string;
       width: number;
       height: number;
       likesId: string[];
+      follower: string[];
     }) => {
       return (
         <div
@@ -31,6 +33,7 @@ export const DocumentList = ({ results }: { results: any }) => {
             coverImage={coverImage}
             documentId={_id as Id<"documents">}
             likesArray={likesId}
+            followerArray={follower}
           ></SingleItem>
         </div>
       );

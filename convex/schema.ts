@@ -10,7 +10,8 @@ export default defineSchema({
     coverImage: v.string(),
     width: v.number(),
     height: v.number(),
-    likesId: v.optional(v.array(v.string()))
+    likesId: v.optional(v.array(v.string())),
+    follower:  v.optional(v.array(v.string()))
  
   }).index("by_user", ["userId"]),
 

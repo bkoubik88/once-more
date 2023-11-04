@@ -1,6 +1,7 @@
 "use client";
 import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as FilledHeart } from "@heroicons/react/24/solid";
+import { BookmarkIcon as FilledBookmark } from "@heroicons/react/24/solid";
 
 import { useConvexAuth, useMutation } from "convex/react";
 import Image from "next/image";
@@ -14,16 +15,20 @@ interface IMAGE {
   coverImage: string;
   documentId: Id<"documents">;
   likesArray: string[];
+  followerArray: string[];
 }
 
 export default function SingleItem({
   coverImage,
   documentId,
   likesArray,
+  followerArray,
 }: IMAGE) {
   const { isLoading, isAuthenticated } = useConvexAuth();
 
-  const updateLikes = useMutation(api.documents.updateDocument);
+  const updateLikes = useMutation(api.documents.updateLikes);
+  const updateFollowers = useMutation(api.documents.updateFollower);
+
   const { user } = useUser();
 
   const updateLikesMutation = async () => {
@@ -38,6 +43,20 @@ export default function SingleItem({
     }
 
     updateLikes({ id: documentId, likesArray: arrayClone });
+  };
+
+  const updateFollower = async () => {
+    const arrayClone = followerArray;
+
+    if (!arrayClone.includes(user?.id!)) {
+      arrayClone.push(user?.id!);
+    } else {
+      const findIndexUser = arrayClone.indexOf(user?.id!);
+
+      arrayClone.splice(findIndexUser, 1);
+    }
+
+    updateFollowers({ id: documentId, followerArray: arrayClone });
   };
 
   if (!isAuthenticated && isLoading) {
@@ -91,8 +110,19 @@ export default function SingleItem({
           ></HeartIcon>
         )}
       </div>
+
       <div className="absolute top-1 left-1 bg-slate-50/30 text-yellow-300 rounded-md flex items-center">
-        <BookmarkIcon className="h-10 w-10 p-1 hover:scale-105 cursor-pointer outline-none hover:outline-none"></BookmarkIcon>
+        {followerArray && followerArray.includes(user?.id!) ? (
+          <FilledBookmark
+            className="h-10 w-10 p-1 hover:scale-105 cursor-pointer outline-none hover:outline-none text-yellow-500"
+            onClick={() => updateFollower()}
+          ></FilledBookmark>
+        ) : (
+          <BookmarkIcon
+            className="h-10 w-10 p-1 hover:scale-105 cursor-pointer outline-none hover:outline-none"
+            onClick={() => updateFollower()}
+          ></BookmarkIcon>
+        )}
       </div>
     </div>
   );
