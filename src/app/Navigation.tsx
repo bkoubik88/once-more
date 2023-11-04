@@ -14,9 +14,15 @@ export default function Navigation() {
       <div className="w-full p-3 bg-cyan-950  flex flex-1 items-center justify-between space-x-3 ">
         <Search></Search>
 
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 items-center">
           {!isAuthenticated && isLoading && <Spinner></Spinner>}
-          {!isAuthenticated && !isLoading && <SignInButton mode="modal" />}
+          {!isAuthenticated && !isLoading && (
+            <SignInButton mode="modal">
+              <Button variant="bordered" color="success">
+                sing In
+              </Button>
+            </SignInButton>
+          )}
           {isAuthenticated && !isLoading && (
             <UserButton afterSignOutUrl="/"></UserButton>
           )}

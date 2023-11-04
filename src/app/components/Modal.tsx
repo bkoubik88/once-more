@@ -142,7 +142,7 @@ export default function CoverImageModal() {
                             priority
                             width={400}
                             height={400}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 100vw"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             style={{ objectFit: "contain" }}
                             quality={75}
                             alt="preview"

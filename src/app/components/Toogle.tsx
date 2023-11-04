@@ -61,5 +61,9 @@ const ThemeSwitch = (props: SwitchProps) => {
 };
 
 export default function Toogle() {
-  return <ThemeSwitch />;
+  return (
+    <div>
+      <ThemeSwitch />
+    </div>
+  );
 }

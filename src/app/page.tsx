@@ -1,20 +1,14 @@
 "use client";
-import Link from "next/link";
+
 import { useConvexAuth, usePaginatedQuery } from "convex/react";
-import { Button, Image } from "@nextui-org/react";
 import CoverImageModal from "./components/Modal";
-import { useCoverImage } from "./hooks/upload-image-cover";
-import { useMutation } from "convex/react";
+
 import { api } from "../../convex/_generated/api";
-import { Doc } from "../../convex/_generated/dataModel";
-import { useQuery } from "convex/react";
-import { Box } from "@mui/material";
-import { useUser } from "@clerk/clerk-react";
+
 import { Spinner } from "@nextui-org/react";
-import { SignInButton } from "@clerk/nextjs";
-import AddNewPost from "./components/AddNewPost";
+
 import { DocumentList } from "./components/DocumentList";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 export default function Home() {
@@ -34,29 +28,23 @@ export default function Home() {
     }
   }, [inView, status]);
 
-  if (!isAuthenticated) {
+  if (isAuthenticated) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <SignInButton mode="modal" />
-      </div>
+      <>
+        <main className="px-2 py-4 bg-white dark:bg-cyan-800 ">
+          <div className="grid grid-flow-row-dense grid-cols-1  sm:grid-cols-3 md:grid-cols-4  xl:grid-cols-6  gap-2">
+            <DocumentList results={results}></DocumentList>
+          </div>
+
+          <CoverImageModal></CoverImageModal>
+
+          {status !== "Exhausted" && (
+            <div ref={ref} className="flex items-center justify-center p-2">
+              <Spinner></Spinner>
+            </div>
+          )}
+        </main>
+      </>
     );
   }
-
-  return (
-    <>
-      <main className="px-2 py-4 bg-white dark:bg-cyan-800 ">
-        <div className="grid grid-flow-row-dense grid-cols-1  sm:grid-cols-3 md:grid-cols-4  xl:grid-cols-6  gap-2">
-          <DocumentList results={results}></DocumentList>
-        </div>
-
-        <CoverImageModal></CoverImageModal>
-
-        {status !== "Exhausted" && (
-          <div ref={ref} className="flex items-center justify-center p-2">
-            <Spinner></Spinner>
-          </div>
-        )}
-      </main>
-    </>
-  );
 }
