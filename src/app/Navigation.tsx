@@ -5,7 +5,6 @@ import { SignInButton, UserButton } from "@clerk/nextjs";
 import { useConvexAuth } from "convex/react";
 import { Button, Spinner } from "@nextui-org/react";
 import Toogle from "./components/Toogle";
-import { useCoverImage } from "./hooks/upload-image-cover";
 
 export default function Navigation() {
   const { isLoading, isAuthenticated } = useConvexAuth();

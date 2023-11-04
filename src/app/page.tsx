@@ -16,7 +16,6 @@ import AddNewPost from "./components/AddNewPost";
 import { DocumentList } from "./components/DocumentList";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import Masonry from "@mui/lab/Masonry";
 
 export default function Home() {
   const { ref, inView } = useInView();
@@ -44,7 +43,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="mx-2 py-4">
+      <main className="px-2 py-4 bg-white dark:bg-cyan-800">
         <div className="grid grid-flow-row-dense grid-cols-1  sm:grid-cols-3 md:grid-cols-4  xl:grid-cols-6  gap-2">
           <DocumentList results={results}></DocumentList>
         </div>

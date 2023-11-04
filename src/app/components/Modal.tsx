@@ -18,6 +18,7 @@ import { Image as NextUiImage } from "@nextui-org/react";
 import { formatFileSize } from "@edgestore/react/utils";
 import { api } from "../../../convex/_generated/api";
 import { getImageSize, useImageSize } from "react-image-size";
+import Image from "next/image";
 
 interface UploadeFile {
   url: string;
@@ -103,6 +104,7 @@ export default function CoverImageModal() {
   return (
     <>
       <Modal
+        placement="center"
         isOpen={coverImage.isOpen}
         onOpenChange={coverImage.onClose}
         isDismissable={false}
@@ -124,7 +126,7 @@ export default function CoverImageModal() {
                     </Button>
                     <input
                       id="uploadImage"
-                      accept="images/*"
+                      accept="image/*"
                       type="file"
                       className="hidden"
                       onChange={(e) => {
@@ -135,15 +137,15 @@ export default function CoverImageModal() {
                     {preview && (
                       <div className="flex flex-col">
                         <div className="relative">
-                          <NextUiImage
-                            isBlurred
+                          <Image
+                            priority
                             width={400}
                             height={400}
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            style={{ objectFit: "cover" }}
+                            style={{ objectFit: "contain" }}
                             alt="preview"
                             src={preview}
-                          ></NextUiImage>
+                          ></Image>
                           <span className="absolute top-4 text-center font-semibold p-2 text-black z-50 bg-slate-300/70 items-center w-full">
                             Preview
                           </span>
@@ -174,7 +176,7 @@ export default function CoverImageModal() {
                         width={400}
                         height={400}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        style={{ objectFit: "cover" }}
+                        style={{ objectFit: "contain" }}
                         alt="uploadedFile"
                         src={uploadedFile.url}
                       ></NextUiImage>
@@ -192,7 +194,7 @@ export default function CoverImageModal() {
                     Close
                   </Button>
                 )}
-                {!uploadedFile?.url && (
+                {!uploadedFile?.url && preview && (
                   <Button
                     color="danger"
                     variant="light"

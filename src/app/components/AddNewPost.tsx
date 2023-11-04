@@ -1,21 +1,18 @@
 "use client";
 import * as React from "react";
-import Box from "@mui/material/Box";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
+
 import { useCoverImage } from "../hooks/upload-image-cover";
-import { Button } from "@nextui-org/react";
+import { CameraIcon } from "@heroicons/react/24/outline";
 
 export default function AddNewPost() {
   const coverImage = useCoverImage();
 
   return (
-    <SpeedDial
-      onClick={coverImage.onOpen}
-      ariaLabel="SpeedDial basic example"
-      sx={{ position: "fixed", bottom: 16, right: 16 }}
-      icon={<SpeedDialIcon />}
-    ></SpeedDial>
+    <div className="fixed bottom-2 right-2 bg-fuchsia-600 h-[60px] w-[60px] rounded-full items-center justify-center flex cursor-pointer shadow-md">
+      <CameraIcon
+        onClick={coverImage.onOpen}
+        className="h-9 w-9  p-1 text-white"
+      ></CameraIcon>
+    </div>
   );
 }
