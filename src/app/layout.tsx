@@ -19,6 +19,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <link rel="icon" href="/favicon.ico" sizes="any" />
+
       <body className={`${inter.className}`}>
         <EdgeStoreProvider>
           <ClerkProviderPro>
