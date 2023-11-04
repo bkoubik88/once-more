@@ -16,7 +16,6 @@ export default function ClerkProviderPro({
 }) {
   return (
     <ClerkProvider
-      localization={deDE}
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}
     >
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>

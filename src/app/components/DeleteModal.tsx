@@ -31,7 +31,7 @@ export default function DeleteModal({ deletePostFunktion }: DELETE) {
             <>
               <ModalBody>
                 <p className="flex items-center justify-center p-8 font-semibold">
-                  Post wirklich löschen?
+                  Are you sure you want to delete the post?
                 </p>
               </ModalBody>
               <ModalFooter>
@@ -40,7 +40,7 @@ export default function DeleteModal({ deletePostFunktion }: DELETE) {
                   variant="light"
                   onPress={deletePost.onClose}
                 >
-                  Close
+                  No
                 </Button>
                 <Button color="primary" onPress={deletePostFunktion}>
                   Yes
