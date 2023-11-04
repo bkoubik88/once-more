@@ -26,7 +26,7 @@ export default function Navigation() {
           {isAuthenticated && !isLoading && (
             <UserButton afterSignOutUrl="/"></UserButton>
           )}
-          <SavedImages></SavedImages>
+          {isAuthenticated && !isLoading && <SavedImages></SavedImages>}
           <Toogle></Toogle>
         </div>
       </div>
