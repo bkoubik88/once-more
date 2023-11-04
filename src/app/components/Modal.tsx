@@ -19,6 +19,7 @@ import { formatFileSize } from "@edgestore/react/utils";
 import { api } from "../../../convex/_generated/api";
 import { getImageSize, useImageSize } from "react-image-size";
 import Image from "next/image";
+import { CldUploadWidget } from "next-cloudinary";
 
 interface UploadeFile {
   url: string;
@@ -64,6 +65,7 @@ export default function CoverImageModal() {
           setValue(progress);
         },
       });
+
       const dimensions = await getImageSize(res.url);
 
       const promise = createPost({
@@ -77,8 +79,6 @@ export default function CoverImageModal() {
       toast.promise(promise, {
         loading: "Loading...",
         success: (data) => {
-          console.log(data);
-
           return "Everything went smoothly.";
         },
         error: "there was an error while storing",
@@ -142,8 +142,9 @@ export default function CoverImageModal() {
                             priority
                             width={400}
                             height={400}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 100vw"
                             style={{ objectFit: "contain" }}
+                            quality={75}
                             alt="preview"
                             src={preview}
                           ></Image>
@@ -164,25 +165,6 @@ export default function CoverImageModal() {
                       />
                     )}
                   </div>
-
-                  {uploadedFile?.url && (
-                    <div className="my-3">
-                      <span className="items-center flex justify-center font-semibold text-neutral-500">
-                        Successfully uploaded!
-                        <span className="text-sm text-neutral-400">
-                          ({`${formatFileSize(uploadedFile.size)}`})
-                        </span>
-                      </span>
-                      <NextUiImage
-                        width={400}
-                        height={400}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        style={{ objectFit: "contain" }}
-                        alt="uploadedFile"
-                        src={uploadedFile.url}
-                      ></NextUiImage>
-                    </div>
-                  )}
                 </div>
               </ModalBody>
               <ModalFooter>

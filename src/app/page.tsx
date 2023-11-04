@@ -20,20 +20,21 @@ import { useInView } from "react-intersection-observer";
 export default function Home() {
   const { ref, inView } = useInView();
 
-  const { isLoading, isAuthenticated } = useConvexAuth();
-  const { results, status, loadMore } = usePaginatedQuery(
+  const { isAuthenticated } = useConvexAuth();
+
+  const { results, status, loadMore, isLoading } = usePaginatedQuery(
     api.documents.allPosts,
     {},
     { initialNumItems: 4 }
   );
 
   useEffect(() => {
-    if (inView && status !== "Exhausted") {
+    if (inView && status !== "Exhausted" && !isLoading) {
       loadMore(4);
     }
   }, [inView, status]);
 
-  if (!isAuthenticated && !isLoading) {
+  if (!isAuthenticated) {
     return (
       <div className="flex items-center justify-center p-8">
         <SignInButton mode="modal" />
@@ -43,12 +44,18 @@ export default function Home() {
 
   return (
     <>
-      <main className="px-2 py-4 bg-white dark:bg-cyan-800">
+      <main className="px-2 py-4 bg-white dark:bg-cyan-800 ">
         <div className="grid grid-flow-row-dense grid-cols-1  sm:grid-cols-3 md:grid-cols-4  xl:grid-cols-6  gap-2">
           <DocumentList results={results}></DocumentList>
         </div>
 
         <CoverImageModal></CoverImageModal>
+
+        {status !== "Exhausted" && (
+          <div ref={ref} className="flex items-center justify-center p-2">
+            <Spinner></Spinner>
+          </div>
+        )}
       </main>
     </>
   );

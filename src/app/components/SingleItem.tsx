@@ -64,9 +64,11 @@ export default function SingleItem({
   return (
     <div className="h-[350px] w-auto relative">
       <Image
-        className=" rounded-md"
+        className="rounded-md"
         alt="coverImage"
         src={coverImage}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        quality={100}
         fill
         priority
         style={{ objectFit: "cover" }}
