@@ -63,7 +63,7 @@ export default function Menu() {
             startContent={<HomeIcon className="h-8 w-8" />}
             href="/"
           >
-            <Link href={"/"}>Home</Link>
+            Home
           </DropdownItem>
 
           <DropdownItem
@@ -71,7 +71,7 @@ export default function Menu() {
             className="w-full"
             startContent={<BookmarkIcon className="h-8 w-8 " />}
           >
-            <Link href={"/bookmarks"}>Bookmarks</Link>
+            Bookmarks
           </DropdownItem>
 
           <DropdownItem
