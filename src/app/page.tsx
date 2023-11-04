@@ -43,9 +43,11 @@ export default function Home() {
             </div>
           ) : (
             !isLoading && (
-              <div className="flex flex-col items-center w-full justify-center space-y-2 cursor-pointer h-screen mx-auto">
+              <div className="flex flex-col items-center w-full justify-center space-y-2  h-screen mx-auto">
                 <p>No Post yet, be the first one!</p>
-                <Button color="success">create first Post</Button>
+                <Button color="success" onClick={coverImage.onOpen}>
+                  Be the first!
+                </Button>
               </div>
             )
           )}
@@ -65,7 +67,8 @@ export default function Home() {
   }
   if (!isAuthenticated && !isLoading) {
     return (
-      <div className="flex flex-col space-x-3 p-4 justify-center items-center mt-4 h-screen mx-auto">
+      <div className="flex flex-col items-center w-full justify-center space-y-2  h-screen mx-auto bg-white dark:bg-cyan-800">
+        <p>You are not signed in</p>
         <SignInButton mode="modal">
           <Button variant="bordered" color="success" size="lg">
             sign In
