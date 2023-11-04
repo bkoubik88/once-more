@@ -6,6 +6,7 @@ import { Button, Spinner } from "@nextui-org/react";
 import Toogle from "./components/Toogle";
 import Logo from "./Logo";
 import SavedImages from "./components/SavedImages";
+import Menu from "./components/Menu";
 
 export default function Navigation() {
   const { isLoading, isAuthenticated } = useConvexAuth();
@@ -26,8 +27,8 @@ export default function Navigation() {
           {isAuthenticated && !isLoading && (
             <UserButton afterSignOutUrl="/"></UserButton>
           )}
-          {isAuthenticated && !isLoading && <SavedImages></SavedImages>}
-          <Toogle></Toogle>
+
+          <Menu></Menu>
         </div>
       </div>
     </header>
