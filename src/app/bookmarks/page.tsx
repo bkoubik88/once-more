@@ -1,13 +1,24 @@
 "use client";
-import { useQuery } from "convex/react";
-import React from "react";
+import { useConvexAuth, useQuery } from "convex/react";
+import React, { useEffect } from "react";
 import { api } from "../../../convex/_generated/api";
 import Image from "next/image";
 import { useUser } from "@clerk/clerk-react";
+import { useRouter } from "next/navigation";
 
 export default function YourBookmars() {
   const likes = useQuery(api.documents.listBookmarkedImages);
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
   const { user } = useUser();
+
+  const navigation = useRouter();
+
+  useEffect(() => {
+    if (!isAuthenticated && !isLoading) {
+      navigation.replace("/");
+    }
+  }, [isAuthenticated, isLoading]);
 
   if (user) {
     return (
