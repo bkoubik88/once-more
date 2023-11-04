@@ -14,12 +14,6 @@ export default function YourBookmars() {
 
   const navigation = useRouter();
 
-  useEffect(() => {
-    if (!isAuthenticated && !isLoading) {
-      navigation.replace("/");
-    }
-  }, [isAuthenticated, isLoading]);
-
   if (isAuthenticated && !isLoading && user) {
     return (
       <div className="px-2 py-4 bg-white dark:bg-cyan-800 min-h-screen">
@@ -58,4 +52,6 @@ export default function YourBookmars() {
       </div>
     );
   }
+
+  return navigation.replace("/");
 }
