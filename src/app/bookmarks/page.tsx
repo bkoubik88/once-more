@@ -20,7 +20,7 @@ export default function YourBookmars() {
     }
   }, [isAuthenticated, isLoading]);
 
-  if (user) {
+  if (isAuthenticated && !isLoading && user) {
     return (
       <div className="px-2 py-4 bg-white dark:bg-cyan-800 min-h-screen">
         <p className="w-full flex items-center justify-center my-2">
