@@ -5,7 +5,7 @@ import CoverImageModal from "./components/Modal";
 
 import { api } from "../../convex/_generated/api";
 
-import { Spinner } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
 
 import { DocumentList } from "./components/DocumentList";
 import { useCallback, useEffect } from "react";
@@ -13,6 +13,7 @@ import { useInView } from "react-intersection-observer";
 import AddNewPost from "./components/AddNewPost";
 import Image from "next/image";
 import { useCoverImage } from "./hooks/upload-image-cover";
+import { SignInButton, UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   const { ref, inView } = useInView();
@@ -32,7 +33,7 @@ export default function Home() {
     }
   }, [inView, status]);
 
-  if (isAuthenticated) {
+  if (isAuthenticated && !isLoading) {
     return (
       <>
         <main className="px-2 py-4 bg-white dark:bg-cyan-800 min-h-screen">
@@ -67,6 +68,18 @@ export default function Home() {
           <AddNewPost></AddNewPost>
         </main>
       </>
+    );
+  }
+  if (!isAuthenticated && !isLoading) {
+    return (
+      <div className="flex flex-col space-x-3 p-4 justify-center items-center mt-4 bg-neutral-50">
+        <Image alt="Logo" width={400} height={400} src={"/findMe.png"}></Image>
+        <SignInButton mode="modal">
+          <Button variant="bordered" color="success">
+            sign In
+          </Button>
+        </SignInButton>
+      </div>
     );
   }
 }

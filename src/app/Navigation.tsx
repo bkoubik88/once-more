@@ -19,7 +19,7 @@ export default function Navigation() {
           {!isAuthenticated && !isLoading && (
             <SignInButton mode="modal">
               <Button variant="bordered" color="success">
-                sing In
+                sign In
               </Button>
             </SignInButton>
           )}
