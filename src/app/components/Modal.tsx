@@ -71,6 +71,7 @@ export default function CoverImageModal() {
         coverImage: res.url,
         width: dimensions.width,
         height: dimensions.height,
+        likesId: [],
       });
 
       toast.promise(promise, {

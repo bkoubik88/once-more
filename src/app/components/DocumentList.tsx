@@ -1,5 +1,6 @@
 "use client";
 
+import { Id } from "../../../convex/_generated/dataModel";
 import SingleItem from "./SingleItem";
 
 export const DocumentList = ({ results }: { results: any }) => {
@@ -9,11 +10,13 @@ export const DocumentList = ({ results }: { results: any }) => {
       coverImage,
       width,
       height,
+      likesId,
     }: {
       _id: string;
       coverImage: string;
       width: number;
       height: number;
+      likesId: string[];
     }) => {
       return (
         <div
@@ -24,7 +27,11 @@ export const DocumentList = ({ results }: { results: any }) => {
               : "col-span-1 row-span-1"
           }`}
         >
-          <SingleItem coverImage={coverImage}></SingleItem>
+          <SingleItem
+            coverImage={coverImage}
+            documentId={_id as Id<"documents">}
+            likesArray={likesId}
+          ></SingleItem>
         </div>
       );
     }

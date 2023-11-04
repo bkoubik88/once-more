@@ -49,15 +49,6 @@ export default function Home() {
         </div>
 
         <CoverImageModal></CoverImageModal>
-
-        {status !== "Exhausted" && (
-          <div
-            ref={ref}
-            className="flex items-center w-full justify-center p-2"
-          >
-            <Spinner></Spinner>
-          </div>
-        )}
       </main>
     </>
   );

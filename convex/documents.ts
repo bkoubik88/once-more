@@ -1,7 +1,18 @@
 import { paginationOptsValidator } from "convex/server";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { Id } from "./_generated/dataModel";
 
+
+interface DOCTYPE {
+   _creationTime: number,
+      _id: Id<"documents">,
+      coverImage: string,
+      height: number,
+      title: string,
+      userId: string,
+      width: number
+}
 
 
 export const allPosts = query({
@@ -9,12 +20,46 @@ export const allPosts = query({
     handler: async (ctx,args) => {
 
       const documents = await ctx.db.query("documents").withIndex("by_user"
-      ).order("asc") .paginate(args.paginationOpts);
+      ).order("asc").paginate(args.paginationOpts);
+
 
       return documents
     },
   });
 
+  export const updateDocument= mutation({
+    args: { 
+      id: v.id("documents"),
+      likesArray: v.array(v.string())
+    },
+    handler: async (ctx, args) => {
+      const { id } = args;   
+ 
+     const document =  await ctx.db.patch(id, { likesId:  args.likesArray });
+
+     return document
+     
+    },
+  });
+
+
+
+  export const like = mutation({
+    args: { 
+      likerId: v.string(),
+      documentId: v.id("documents")
+    },
+      handler: async (ctx,args) => {
+        
+        const document = await ctx.db.insert("likes",{
+          likerId:args.likerId,
+          documentId:args.documentId
+        })
+  
+        return document
+      },
+    });
+  
 
 
   export const getSingleImage = query({
@@ -53,6 +98,7 @@ export const allPosts = query({
         coverImage: v.string(),      
         width: v.number(),
         height: v.number(),
+        likesId: v.array(v.string())
      },
     handler: async (ctx, args) => {
 
@@ -69,7 +115,8 @@ export const allPosts = query({
         userId,
         coverImage:args.coverImage,
         width:args.width,
-        height:args.height
+        height:args.height,
+        likesId: args.likesId 
        });
    
 

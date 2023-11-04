@@ -1,13 +1,17 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
+
 export default defineSchema({
-  documents: defineTable({
+
+    documents: defineTable({
     title: v.string(),
     userId: v.string(),
     coverImage: v.string(),
     width: v.number(),
     height: v.number(),
+    likesId: v.optional(v.array(v.string()))
+ 
   }).index("by_user", ["userId"]),
 
   imageSize: defineTable({
@@ -17,7 +21,7 @@ export default defineSchema({
   }).index("by_documentId", ["documentId"]),
 
   likes: defineTable({
-    liker: v.string(),
+    likerId: v.string(),
     documentId: v.id("documents"),
   }).index("by_documentId", ["documentId"])
 });
