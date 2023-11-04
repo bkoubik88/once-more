@@ -4,19 +4,10 @@ import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
 
 
-interface DOCTYPE {
-   _creationTime: number,
-      _id: Id<"documents">,
-      coverImage: string,
-      height: number,
-      title: string,
-      userId: string,
-      width: number
-}
 
 
 export const allPosts = query({
-  args: { paginationOpts: paginationOptsValidator},
+   args: { paginationOpts: paginationOptsValidator},
     handler: async (ctx,args) => {
 
       const documents = await ctx.db.query("documents").withIndex("by_user"
@@ -24,6 +15,15 @@ export const allPosts = query({
 
 
       return documents
+    },
+  });
+
+
+  export const deleteById = mutation({
+    args: { documentId: v.id("documents")},
+    handler: async (ctx,args) => {
+   
+      return await ctx.db.delete(args.documentId);
     },
   });
 

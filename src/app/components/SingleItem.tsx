@@ -1,21 +1,28 @@
 "use client";
-import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
+import {
+  BookmarkIcon,
+  HeartIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/outline";
 import { HeartIcon as FilledHeart } from "@heroicons/react/24/solid";
 import { BookmarkIcon as FilledBookmark } from "@heroicons/react/24/solid";
 
 import { useConvexAuth, useMutation } from "convex/react";
 import Image from "next/image";
-import React from "react";
+import React, { useCallback } from "react";
 import { api } from "../../../convex/_generated/api";
 import { useUser } from "@clerk/clerk-react";
 import { Id } from "../../../convex/_generated/dataModel";
 import { Card, Skeleton } from "@nextui-org/react";
+import { useEdgeStore } from "@/lib/edgestore";
+import { toast } from "sonner";
 
 interface IMAGE {
   coverImage: string;
   documentId: Id<"documents">;
   likesArray: string[];
   followerArray: string[];
+  userId: string;
 }
 
 export default function SingleItem({
@@ -23,15 +30,37 @@ export default function SingleItem({
   documentId,
   likesArray,
   followerArray,
+  userId,
 }: IMAGE) {
   const { isLoading, isAuthenticated } = useConvexAuth();
+  const { edgestore } = useEdgeStore();
 
   const updateLikes = useMutation(api.documents.updateLikes);
   const updateFollowers = useMutation(api.documents.updateFollower);
+  const deleteDocument = useMutation(api.documents.deleteById);
 
   const { user } = useUser();
 
-  const updateLikesMutation = async () => {
+  const deletePost = useCallback(async () => {
+    await edgestore.publicImages
+      .delete({ url: coverImage })
+      .then(async () => {
+        const promise = deleteDocument({ documentId });
+
+        toast.promise(promise, {
+          loading: "Loading...",
+          success: () => {
+            return "Successfully deleted";
+          },
+          error: "there was an error while deleting",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [documentId]);
+
+  const updateLikesMutation = useCallback(async () => {
     const arrayClone = likesArray;
 
     if (!arrayClone.includes(user?.id!)) {
@@ -43,9 +72,9 @@ export default function SingleItem({
     }
 
     updateLikes({ id: documentId, likesArray: arrayClone });
-  };
+  }, [documentId, likesArray, user?.id]);
 
-  const updateFollower = async () => {
+  const updateFollower = useCallback(async () => {
     const arrayClone = followerArray;
 
     if (!arrayClone.includes(user?.id!)) {
@@ -57,7 +86,7 @@ export default function SingleItem({
     }
 
     updateFollowers({ id: documentId, followerArray: arrayClone });
-  };
+  }, [documentId, followerArray, user?.id]);
 
   if (!isAuthenticated && isLoading) {
     return (
@@ -111,7 +140,7 @@ export default function SingleItem({
         )}
       </div>
 
-      <div className="absolute top-1 left-1 bg-slate-50/30 text-yellow-300 rounded-md flex items-center">
+      <div className="absolute top-1 left-1 bg-slate-50/30  rounded-md flex items-center">
         {followerArray && followerArray.includes(user?.id!) ? (
           <FilledBookmark
             className="h-10 w-10 p-1 hover:scale-105 cursor-pointer outline-none hover:outline-none text-yellow-500"
@@ -119,11 +148,19 @@ export default function SingleItem({
           ></FilledBookmark>
         ) : (
           <BookmarkIcon
-            className="h-10 w-10 p-1 hover:scale-105 cursor-pointer outline-none hover:outline-none"
+            className="h-10 w-10 p-1 hover:scale-105 cursor-pointer text-yellow-300 outline-none hover:outline-none"
             onClick={() => updateFollower()}
           ></BookmarkIcon>
         )}
       </div>
+      {user?.id === userId && (
+        <div className="absolute left-1 bottom-1  rounded-md flex items-center">
+          <XCircleIcon
+            className="h-10 w-10 p-1 hover:scale-105 cursor-pointer outline-none hover:outline-none text-red-500"
+            onClick={deletePost}
+          ></XCircleIcon>
+        </div>
+      )}
     </div>
   );
 }
