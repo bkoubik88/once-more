@@ -10,6 +10,7 @@ import { Spinner } from "@nextui-org/react";
 import { DocumentList } from "./components/DocumentList";
 import { useCallback, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import AddNewPost from "./components/AddNewPost";
 
 export default function Home() {
   const { ref, inView } = useInView();
@@ -31,7 +32,7 @@ export default function Home() {
   if (isAuthenticated) {
     return (
       <>
-        <main className="px-2 py-4 bg-white dark:bg-cyan-800 ">
+        <main className="px-2 py-4 bg-white dark:bg-cyan-800 min-h-screen">
           <div className="grid grid-flow-row-dense grid-cols-1  sm:grid-cols-3 md:grid-cols-4  xl:grid-cols-6  gap-2">
             <DocumentList results={results}></DocumentList>
           </div>
@@ -43,6 +44,8 @@ export default function Home() {
               <Spinner></Spinner>
             </div>
           )}
+
+          <AddNewPost></AddNewPost>
         </main>
       </>
     );

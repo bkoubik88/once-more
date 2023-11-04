@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
-import Search from "./Search";
 import { SignInButton, UserButton } from "@clerk/nextjs";
 import { useConvexAuth } from "convex/react";
 import { Button, Spinner } from "@nextui-org/react";
 import Toogle from "./components/Toogle";
+import Logo from "./Logo";
+import SavedImages from "./components/SavedImages";
 
 export default function Navigation() {
   const { isLoading, isAuthenticated } = useConvexAuth();
@@ -12,8 +13,7 @@ export default function Navigation() {
   return (
     <header className="sticky top-0 z-50 shadow-md">
       <div className="w-full p-3 bg-cyan-950  flex flex-1 items-center justify-between space-x-3 ">
-        <Search></Search>
-
+        <Logo></Logo>
         <div className="flex space-x-4 items-center">
           {!isAuthenticated && isLoading && <Spinner></Spinner>}
           {!isAuthenticated && !isLoading && (
@@ -26,6 +26,7 @@ export default function Navigation() {
           {isAuthenticated && !isLoading && (
             <UserButton afterSignOutUrl="/"></UserButton>
           )}
+          <SavedImages></SavedImages>
           <Toogle></Toogle>
         </div>
       </div>

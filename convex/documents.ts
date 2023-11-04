@@ -1,7 +1,6 @@
 import { paginationOptsValidator } from "convex/server";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { Id } from "./_generated/dataModel";
 
 
 
@@ -10,9 +9,7 @@ export const allPosts = query({
    args: { paginationOpts: paginationOptsValidator},
     handler: async (ctx,args) => {
 
-      const documents = await ctx.db.query("documents").withIndex("by_user"
-      ).order("asc").paginate(args.paginationOpts);
-
+      const documents = await ctx.db.query("documents").order("asc").paginate(args.paginationOpts);
 
       return documents
     },
@@ -36,6 +33,7 @@ export const allPosts = query({
       const { id } = args;   
  
      const document =  await ctx.db.patch(id, { likesId:  args.likesArray });
+
 
      return document
      
@@ -90,6 +88,55 @@ export const allPosts = query({
     });
   
 
+    export const createLike = mutation({
+      args: { 
+        documentId: v.id("documents")
+      },
+        handler: async (ctx,args) => {
+
+          
+        const identity =await ctx.auth.getUserIdentity()
+
+        if(!identity)
+        {
+          return
+        }
+        const userId  = identity.subject
+
+        console.log(userId)
+
+          const oneLike = await ctx.db.insert("likes",{
+            likerId:userId,
+            documentId: args.documentId
+          })
+    
+          return oneLike
+        },
+      });
+
+
+
+      export const removeLike = mutation({
+        args: { 
+          likeId: v.id("likes")
+        },
+          handler: async (ctx,args) => {
+  
+            
+          const identity =await ctx.auth.getUserIdentity()
+  
+          if(!identity)
+          {
+            return
+          }
+  
+            const oneLike = await ctx.db.delete(args.likeId)
+      
+            return oneLike
+          },
+        });
+      
+    
 
   export const insertImageSize = mutation({
     args:{
@@ -109,6 +156,51 @@ export const allPosts = query({
  
      },
   })
+
+
+
+  export const listBookmarkedImages = query({
+    args: {},
+    handler: async (ctx) => {
+
+
+      const identity =await ctx.auth.getUserIdentity()
+  
+      if(!identity)
+      {
+        return
+      }
+
+      const userId = identity.subject
+
+    
+
+      const messages = await ctx.db.query("documents").order("asc").collect();
+      const messagesWithLikes = await Promise.all(
+        messages.map(async (document) => {
+          
+          const likes = await ctx.db
+            .query("likes")
+            .withIndex("by_likerId_documentId", (q) => 
+            q
+            .eq("likerId",userId)
+            .eq("documentId", document._id
+            ))
+            
+            .collect();
+          return {
+            ...document,
+            likes
+          };
+        })
+      );
+      // Reverse the list so that it's in a chronological order.
+      return messagesWithLikes.reverse().map((documents) => ({
+        ...documents
+      
+      }));
+    },
+  });
 
   export const createPost = mutation({
     args: {    

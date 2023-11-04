@@ -107,6 +107,7 @@ export default function CoverImageModal() {
         onOpenChange={coverImage.onClose}
         isDismissable={false}
         hideCloseButton={loading}
+        backdrop="blur"
       >
         <ModalContent>
           {(onClose) => (

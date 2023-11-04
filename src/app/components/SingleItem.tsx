@@ -16,6 +16,8 @@ import { Id } from "../../../convex/_generated/dataModel";
 import { Card, Skeleton } from "@nextui-org/react";
 import { useEdgeStore } from "@/lib/edgestore";
 import { toast } from "sonner";
+import DeleteModal from "./DeleteModal";
+import { useDeletePost } from "../hooks/delete-post";
 
 interface IMAGE {
   coverImage: string;
@@ -34,11 +36,13 @@ export default function SingleItem({
 }: IMAGE) {
   const { isLoading, isAuthenticated } = useConvexAuth();
   const { edgestore } = useEdgeStore();
+  const deletePosting = useDeletePost();
 
   const updateLikes = useMutation(api.documents.updateLikes);
   const updateFollowers = useMutation(api.documents.updateFollower);
   const deleteDocument = useMutation(api.documents.deleteById);
-
+  const createNewLike = useMutation(api.documents.createLike);
+  const removeLike = useMutation(api.documents.removeLike);
   const { user } = useUser();
 
   const deletePost = useCallback(async () => {
@@ -50,13 +54,14 @@ export default function SingleItem({
         toast.promise(promise, {
           loading: "Loading...",
           success: () => {
+            deletePosting.onClose();
             return "Successfully deleted";
           },
           error: "there was an error while deleting",
         });
       })
       .catch((err) => {
-        console.log(err);
+        deletePosting.onClose();
       });
   }, [documentId]);
 
@@ -79,6 +84,7 @@ export default function SingleItem({
 
     if (!arrayClone.includes(user?.id!)) {
       arrayClone.push(user?.id!);
+      createNewLike({ documentId });
     } else {
       const findIndexUser = arrayClone.indexOf(user?.id!);
 
@@ -157,10 +163,12 @@ export default function SingleItem({
         <div className="absolute left-1 bottom-1  rounded-md flex items-center">
           <XCircleIcon
             className="h-10 w-10 p-1 hover:scale-105 cursor-pointer outline-none hover:outline-none text-red-500"
-            onClick={deletePost}
+            onClick={deletePosting.onOpen}
           ></XCircleIcon>
         </div>
       )}
+
+      <DeleteModal deletePostFunktion={deletePost}></DeleteModal>
     </div>
   );
 }
