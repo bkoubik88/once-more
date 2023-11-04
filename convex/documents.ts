@@ -209,7 +209,8 @@ export const allPosts = query({
         width: v.number(),
         height: v.number(),
         likesId: v.array(v.string()),
-        follower:  v.array(v.string())
+        follower:  v.array(v.string()),
+        hasChecked: v.optional(v.boolean())
      },
     handler: async (ctx, args) => {
 
@@ -228,7 +229,8 @@ export const allPosts = query({
         width:args.width,
         height:args.height,
         likesId: args.likesId,
-        follower: args.follower 
+        follower: args.follower,
+        hasChecked: false
        });
    
 

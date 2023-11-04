@@ -11,7 +11,8 @@ export default defineSchema({
     width: v.number(),
     height: v.number(),
     likesId: v.optional(v.array(v.string())),
-    follower:  v.optional(v.array(v.string()))
+    follower:  v.optional(v.array(v.string())),
+    hasChecked: v.optional(v.boolean())
  
   }).index("by_user", ["userId"]),
 

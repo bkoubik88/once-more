@@ -18,7 +18,7 @@ import { Image as NextUiImage } from "@nextui-org/react";
 
 import { api } from "../../../convex/_generated/api";
 import { getImageSize } from "react-image-size";
-import Image from "next/image";
+import { v4 as uuidv4 } from "uuid";
 
 interface UploadeFile {
   url: string;
@@ -68,12 +68,13 @@ export default function CoverImageModal() {
       const dimensions = await getImageSize(res.url);
 
       const promise = createPost({
-        title: "First post",
+        title: "Post_" + uuidv4(),
         coverImage: res.url,
         width: dimensions.width,
         height: dimensions.height,
         likesId: [],
         follower: [],
+        hasChecked: false,
       });
 
       toast.promise(promise, {
