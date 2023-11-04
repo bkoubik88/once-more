@@ -9,6 +9,7 @@ import {
   ModalFooter,
   Button,
   Progress,
+  Spinner,
 } from "@nextui-org/react";
 import { useCoverImage } from "../hooks/upload-image-cover";
 import { useEdgeStore } from "@/lib/edgestore";
@@ -136,7 +137,7 @@ export default function CoverImageModal() {
                       }}
                     />
                     {preview && (
-                      <div className="flex flex-col">
+                      <div className="flex flex-col relative">
                         <div className="relative">
                           <NextUiImage
                             width={400}
@@ -149,9 +150,15 @@ export default function CoverImageModal() {
                           <span className="absolute top-4 text-center font-semibold p-2 text-black z-50 bg-slate-300/70 items-center w-full">
                             Preview
                           </span>
+                          {loading && (
+                            <div className="absolute top-0 w-full z-50 h-full flex items-center justify-center">
+                              <Spinner size="lg"></Spinner>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
+
                     {value > 0 && (
                       <Progress
                         aria-label="Uploading..."

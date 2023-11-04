@@ -85,9 +85,11 @@ export default function Menu() {
           >
             Mode
           </DropdownItem>
+
+          {/*
           <DropdownItem key="language">
             <ChangeLanguage></ChangeLanguage>
-          </DropdownItem>
+          </DropdownItem>*/}
         </DropdownMenu>
       </Dropdown>
     );
