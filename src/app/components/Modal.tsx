@@ -112,8 +112,8 @@ export default function CoverImageModal() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                New Post
+              <ModalHeader className="flex flex-col gap-1 justify-center items-center">
+                Post new Image
               </ModalHeader>
               <ModalBody>
                 <div className="flex flex-col">
