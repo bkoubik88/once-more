@@ -13,7 +13,7 @@ export default function YourBookmars() {
     return (
       <div className="px-2 py-4 bg-white dark:bg-cyan-800 min-h-screen">
         <p className="w-full flex items-center justify-center my-2">
-          Your Bookmarks
+          Your Bookmarked Posts
         </p>
         <div className="grid grid-flow-row-dense grid-cols-1  sm:grid-cols-3 md:grid-cols-4  xl:grid-cols-6  gap-2">
           {likes?.map((like) => {
